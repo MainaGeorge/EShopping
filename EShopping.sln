@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{63
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{8B63DB1E-7CF8-4BDC-BCD2-41AA0C5BD784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "Services\Catalog\Catalog.API\Catalog.API.csproj", "{7DBD641B-B18A-47C6-845D-05AD3CC23DD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "Services\Catalog\Catalog.API\Catalog.API.csproj", "{7DBD641B-B18A-47C6-845D-05AD3CC23DD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Application", "Services\Catalog\Catalog.Application\Catalog.Application.csproj", "{084B5BF6-C4D2-4E59-8CF8-2547F041F591}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Application", "Services\Catalog\Catalog.Application\Catalog.Application.csproj", "{084B5BF6-C4D2-4E59-8CF8-2547F041F591}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Core", "Services\Catalog\Catalog.Core\Catalog.Core.csproj", "{25BA90F1-B8BA-404B-A487-FD9FBB296A28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Core", "Services\Catalog\Catalog.Core\Catalog.Core.csproj", "{25BA90F1-B8BA-404B-A487-FD9FBB296A28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Infrastructure", "Services\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj", "{227AF570-9AE3-425D-9A29-8874DFCF58DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrastructure", "Services\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj", "{227AF570-9AE3-425D-9A29-8874DFCF58DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +43,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8B63DB1E-7CF8-4BDC-BCD2-41AA0C5BD784} = {63748DEA-26E9-4B5C-A99D-A5E4D66792BE}
+		{7DBD641B-B18A-47C6-845D-05AD3CC23DD3} = {8B63DB1E-7CF8-4BDC-BCD2-41AA0C5BD784}
+		{084B5BF6-C4D2-4E59-8CF8-2547F041F591} = {8B63DB1E-7CF8-4BDC-BCD2-41AA0C5BD784}
+		{25BA90F1-B8BA-404B-A487-FD9FBB296A28} = {8B63DB1E-7CF8-4BDC-BCD2-41AA0C5BD784}
+		{227AF570-9AE3-425D-9A29-8874DFCF58DA} = {8B63DB1E-7CF8-4BDC-BCD2-41AA0C5BD784}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C98588D-806A-4393-B43E-2D957FD9A236}
