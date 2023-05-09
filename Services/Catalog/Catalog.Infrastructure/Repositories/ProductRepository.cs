@@ -1,7 +1,9 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
+using Catalog.Core.Specifications;
 using Catalog.Infrastructure.Data;
 using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace Catalog.Infrastructure.Repositories
 {
@@ -62,14 +64,62 @@ namespace Catalog.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<Pagination<Product>> GetProducts(CatalogSpecificationsParameters specifications)
         {
-            return await _context
-                .Products
-                .Find(_ => true)
-                .ToListAsync();
+            var filter = BuildFilter(specifications);
+
+            return specifications.Sort switch
+            {
+                "priceAsc" => await Paginate(filter, c => c.Price, specifications),
+                "priceDesc" => await Paginate(filter, c => c.Price, specifications, "desc"),
+                _ => await Paginate(filter, c => c.Name, specifications)
+            };
         }
 
+        private static FilterDefinition<Product> BuildFilter(CatalogSpecificationsParameters specifications)
+        {
+            var builder = Builders<Product>.Filter;
+            var filter = builder.Empty;
+
+            if (!string.IsNullOrEmpty(specifications.Search))
+            {
+                var searchFilter = builder.Regex(x => x.Name, new MongoDB.Bson.BsonRegularExpression(specifications.Search));
+                filter &= searchFilter;
+            }
+
+            if (!string.IsNullOrEmpty(specifications.TypeId))
+            {
+                var typeFilter = builder.Eq(x => x.Types.Id, specifications.TypeId);
+                filter &= typeFilter;
+            }
+
+            if (!string.IsNullOrEmpty(specifications.BrandId))
+            {
+                var brandFilter = builder.Eq(x => x.Brands.Id, specifications.BrandId);
+                filter &= brandFilter;
+            }
+
+            return filter;
+        }
+        private async Task<Pagination<Product>> Paginate(FilterDefinition<Product> filter, Expression<Func<Product, object>> sort,
+            CatalogSpecificationsParameters specifications, string direction="asc")
+        {
+            return new Pagination<Product>
+            {
+                Count = await _context
+                        .Products
+                        .CountDocumentsAsync(_ => true),
+                Data = await _context
+                        .Products
+                        .Find(filter)
+                        .Sort(direction == "asc" ? Builders<Product>.Sort.Ascending(sort) : Builders<Product>.Sort.Descending(sort))
+                        .Skip(specifications.PageSize * (specifications.PageIndex - 1))
+                        .Limit(specifications.PageSize)
+                        .ToListAsync(),
+                PageIndex = specifications.PageIndex,
+                PageSize = specifications.PageSize
+            };
+        }
         public async Task<IEnumerable<Product>> GetProductsByBrand(string brand)
         {
             var filter = Builders<Product>
