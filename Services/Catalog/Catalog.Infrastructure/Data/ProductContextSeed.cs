@@ -9,7 +9,7 @@ namespace Catalog.Infrastructure.Data
         public static void SeedData(IMongoCollection<Product> productsCollection)
         {
             bool checkIfSeeded = productsCollection.Find(t => true).Any();
-            string path = Path.Combine("Data", "SeedData", "brands.json");
+            string path = Path.Combine("Data", "SeedData", "products.json");
 
             if (checkIfSeeded) return;
 

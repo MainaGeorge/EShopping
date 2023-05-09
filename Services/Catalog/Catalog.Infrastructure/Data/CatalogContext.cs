@@ -20,8 +20,8 @@ namespace Catalog.Infrastructure.Data
             Products = database.GetCollection<Product>(configuration.GetValue<string>("DatabaseSettings:CollectionName"));
 
             BrandContextSeed.SeedData(Brands);
-            ProductContextSeed.SeedData(Products);
             ProductTypeContextSeed.SeedData(Types);
+            ProductContextSeed.SeedData(Products);
         }
     }
 }
