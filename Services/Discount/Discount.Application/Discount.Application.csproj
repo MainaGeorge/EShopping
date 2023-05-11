@@ -16,8 +16,12 @@
     <ProjectReference Include="..\Discount.Infrastructure\Discount.Infrastructure.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Protobuf Include="Protos\discount.proto" GrpcServices="Server" />
+	</ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Mappers\" />
+    <Folder Include="Protos\" />
   </ItemGroup>
 
 </Project>
