@@ -1,11 +1,10 @@
-﻿using Catalog.Application.Handlers.Commands;
-using Catalog.Core.Repositories;
-using Catalog.Infrastructure.Data;
-using Catalog.Infrastructure.Repositories;
+﻿using Basket.Application.Handlers;
+using Basket.Core.Repository;
+using Basket.Infrastructure.Repositories;
 using HealthChecks.UI.Client;
 using System.Reflection;
 
-namespace Catalog.API
+namespace Basket.API
 {
     public class StartUp
     {
@@ -20,18 +19,16 @@ namespace Catalog.API
         {
             services.AddControllers();
             services.AddApiVersioning();
-            services.AddHealthChecks()
-                .AddMongoDb(_configuration["DatabaseSettings:ConnectionString"],
-                "Catalog Mongo Db Health Check", Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
-
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "Catalog.API", Version = "v1" }));
+            services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "Basket.API", Version = "v1" }));
             services.AddAutoMapper(typeof(StartUp));
-            services.AddMediatR(c => c.RegisterServicesFromAssembly(typeof(CreateProductHandler).GetTypeInfo().Assembly));
-            services.AddScoped<ICatalogContext, CatalogContext>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductTypeRepository, ProductRepository>();
-            services.AddScoped<IBrandRepository, ProductRepository>();
-
+            services.AddMediatR(c => c.RegisterServicesFromAssembly(typeof(CreateBasketByUserNameCommandHandler).GetTypeInfo().Assembly));
+            services.AddStackExchangeRedisCache(opts =>
+            {
+                opts.Configuration = _configuration.GetValue<string>("CacheSettings:ConnectionString");
+            });
+            services.AddHealthChecks()
+                .AddRedis(_configuration["CacheSettings:ConnectionString"], "Redis Health", Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,7 +37,7 @@ namespace Catalog.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog.API"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Basket.API"));
             }
             app.UseHttpsRedirection();
             app.UseRouting();
