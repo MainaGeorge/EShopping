@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:9002"
+      "applicationUrl": "https://localhost:9001;http://localhost:9001"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -30,8 +30,7 @@
       "launchBrowser": true,
       "launchUrl": "https://localhost:9001/swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:9001;http://localhost:9001"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "distributionName": ""
     }
