@@ -22,6 +22,7 @@ namespace Discount.Infrastructure.Repositories
             var affectedRows = await connection.ExecuteAsync("INSERT INTO Coupon(ProductName, Description, Amount) VALUES(@productName, @description, @Amount)",
                 new { ProductName = coupon.ProductName, Amount = coupon.Amount, Description = coupon.Description });
 
+            await connection.CloseAsync();
             return affectedRows > 0;
         }
 
@@ -31,6 +32,7 @@ namespace Discount.Infrastructure.Repositories
             var affectedRows = await connection.ExecuteAsync("DELETE FROM coupon WHERE productName = @ProductName",
                 new { ProductName = productName });
 
+            await connection.CloseAsync();
             return affectedRows > 0;
         }
 
@@ -39,6 +41,7 @@ namespace Discount.Infrastructure.Repositories
             await using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
             var coupon = await connection.QueryFirstOrDefaultAsync<Coupon>("SELECT * FROM Coupon WHERE productName = @productName", new { productName });
 
+            await connection.CloseAsync();
             return coupon ?? new Coupon { ProductName = "No Discount", Amount = 0, Description = "No discount availabe" };
         }
 
@@ -48,7 +51,16 @@ namespace Discount.Infrastructure.Repositories
             var affectedRows = await connection.ExecuteAsync("UPDATE coupon SET ProductName=@ProductName, Description=@Description, Amount=@Amount WHERE Id = @Id",
                 new { Id = coupon.Id, Amount = coupon.Amount, Description = coupon.Description, ProductName = coupon.ProductName });
 
+            await connection.CloseAsync();
             return affectedRows > 0;
+        }
+
+        private async Task<T?> QueryDatabase<T>(string sqlQuery, object sqlParams)
+        {
+            await using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+            T result = await connection.QueryFirstOrDefault(sqlQuery, sqlParams);
+
+            return result;
         }
     }
 }
