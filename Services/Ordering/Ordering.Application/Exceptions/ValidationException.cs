@@ -7,7 +7,6 @@ namespace Ordering.Application.Exceptions
         public IDictionary<string, string[]> Errors { get; set; }
         public ValidationException() : base("one or more validation errors occurred")
         {
-
         }
 
         public ValidationException(IEnumerable<ValidationFailure> failures) : this()

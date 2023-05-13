@@ -23,7 +23,6 @@ namespace Ordering.Application.Behaviours
             if (failures.Length > 0)
                 throw new ValidationException(failures);
 
-
             return await next();
         }
     }
