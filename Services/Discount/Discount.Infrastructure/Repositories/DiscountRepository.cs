@@ -19,8 +19,8 @@ namespace Discount.Infrastructure.Repositories
         {
             await using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
 
-            var affectedRows = await connection.ExecuteAsync("INSERT INTO Coupon(ProductName, Description, Amount) VALUES(@productName, @description, @Amount)", 
-                new { ProductName = coupon.ProductName, Amount = coupon.Amount, Description=coupon.Description });
+            var affectedRows = await connection.ExecuteAsync("INSERT INTO Coupon(ProductName, Description, Amount) VALUES(@productName, @description, @Amount)",
+                new { ProductName = coupon.ProductName, Amount = coupon.Amount, Description = coupon.Description });
 
             return affectedRows > 0;
         }
@@ -29,7 +29,7 @@ namespace Discount.Infrastructure.Repositories
         {
             await using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
             var affectedRows = await connection.ExecuteAsync("DELETE FROM coupon WHERE productName = @ProductName",
-                new {  ProductName = productName });
+                new { ProductName = productName });
 
             return affectedRows > 0;
         }
@@ -42,7 +42,7 @@ namespace Discount.Infrastructure.Repositories
             return coupon ?? new Coupon { ProductName = "No Discount", Amount = 0, Description = "No discount availabe" };
         }
 
-        public async  Task<bool> UpdateDiscount(Coupon coupon)
+        public async Task<bool> UpdateDiscount(Coupon coupon)
         {
             await using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
             var affectedRows = await connection.ExecuteAsync("UPDATE coupon SET ProductName=@ProductName, Description=@Description, Amount=@Amount WHERE Id = @Id",

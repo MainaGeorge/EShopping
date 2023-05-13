@@ -18,12 +18,12 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/{id}", Name ="GetProductById")]
-        [ProducesResponseType(typeof(ProductResponse), (int) HttpStatusCode.OK)]
+        [Route("[action]/{id}", Name = "GetProductById")]
+        [ProducesResponseType(typeof(ProductResponse), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<ProductResponse>> GetProductById(string id)
         {
             var query = new GetProductByIdQuery(id);
-            var result  = await _mediator.Send(query);
+            var result = await _mediator.Send(query);
 
             return Ok(result);
         }
@@ -90,11 +90,11 @@ namespace Catalog.API.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return CreatedAtRoute(nameof(GetProductById), result, new { id = result.Id});
+            return CreatedAtRoute(nameof(GetProductById), result, new { id = result.Id });
         }
 
         [HttpDelete]
-        [Route("{id}", Name ="DeleteProduct")]
+        [Route("{id}", Name = "DeleteProduct")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateProduct(string id)
         {

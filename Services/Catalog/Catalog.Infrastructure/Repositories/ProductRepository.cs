@@ -102,7 +102,7 @@ namespace Catalog.Infrastructure.Repositories
             return filter;
         }
         private async Task<Pagination<Product>> Paginate(FilterDefinition<Product> filter, Expression<Func<Product, object>> sort,
-            CatalogSpecificationsParameters specifications, string direction="asc")
+            CatalogSpecificationsParameters specifications, string direction = "asc")
         {
             return new Pagination<Product>
             {
