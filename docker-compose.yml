@@ -14,7 +14,8 @@ services:
     image: dpage/pgadmin4
   
   orderdb:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    
 
   portainer:
     image: portainer/portainer-ce:latest
@@ -42,6 +43,8 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.API//Dockerfile
+networks:
+  sql-server:
 
 volumes:
   mongo_data: 

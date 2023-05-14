@@ -6,8 +6,6 @@ using Ordering.Application.Response;
 
 namespace Ordering.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class OrdersController : ApiController
     {
         private readonly IMediator _mediator;
@@ -18,7 +16,7 @@ namespace Ordering.API.Controllers
         }
 
         [HttpGet]
-        [Route("{userName}", Name = "GetOrdersByUserName")]
+        [Route("all/{userName}", Name = "GetOrdersByUserName")]
         [ProducesResponseType(typeof(IEnumerable<OrderResponse>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrderResponse>>> GetOrdersByUserName(string userName)
         {
@@ -27,10 +25,10 @@ namespace Ordering.API.Controllers
         }
 
         [HttpGet]
-        [Route("{orderId}", Name = "GetOrderById")]
+        [Route("{orderId:int}")]
         [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<OrderResponse>>> GetOrdersById(int orderId)
+        public async Task<ActionResult<IEnumerable<OrderResponse>>> GetOrderById(int orderId)
         {
             var command = new GetOrderByIdQuery(orderId);
             var order = await _mediator.Send(command);
@@ -41,19 +39,19 @@ namespace Ordering.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderResponse>> CreateOrder([FromBody] CheckoutOrderCommand command)
         {
             var order = await _mediator.Send(command);
 
-            return CreatedAtRoute("GetOrderById", order, new { orderId = order.Id });
+            return Ok(order);
         }
 
         [HttpPut]
         [Route("{orderId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateOrder(int orderId, [FromBody] UpdateOrderCommand command)
+        public async Task<IActionResult> UpdateOrder(int orderId, [FromBody] UpdateOrderCommand command)
         {
             await _mediator.Send(command);
 
@@ -64,7 +62,7 @@ namespace Ordering.API.Controllers
         [Route("{orderId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateOrder(int orderId)
+        public async Task<IActionResult> DeleteOrder(int orderId)
         {
             await _mediator.Send(new DeleteOrderCommand(orderId));
 

@@ -30,12 +30,14 @@ services:
 
   orderdb:
     container_name: orderdb
-    restart: always
     environment:
-     SA_PASSWORD: Pa$$word12!@
-     ACCEPT_EULA: "Y"
+      - "MSSQL_SA_PASSWORD=Admin123!NewDatabase"
+      - "ACCEPT_EULA=Y"
+    restart: always
     ports:
-     - "1433:1433"
+      - "1433:1433"
+    networks:
+      - sql-server
 
   pgadmin:
     container_name: pgadmin
@@ -89,7 +91,7 @@ services:
     container_name: discount.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=Server=discountdb;Database=DiscountDb;User Id=admin;Password=Password@1"
+      - DatabaseSettings__ConnectionString=Server=discountdb;Database=DiscountDb;User Id=admin;Password=Password@1
     depends_on:
       - discountdb
     ports:
@@ -99,9 +101,10 @@ services:
     container_name: ordering.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings__OrderingConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Pa$$word12!@"
+      - "ConnectionStrings__OrderingConnectionString=Server=orderdb,1433;Database=OrderDb;User Id=sa;Password=Admin123!NewDatabase;encrypt=false"
     depends_on:
       - orderdb
-
     ports:
       - "9003:80"
+    networks:
+      - sql-server

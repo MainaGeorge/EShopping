@@ -16,7 +16,7 @@ namespace Ordering.Infrastructure.Data
             }
         }
 
-        private static IEnumerable<Order> GetOrders()
+        public static IEnumerable<Order> GetOrders()
         {
             return new List<Order>
             {

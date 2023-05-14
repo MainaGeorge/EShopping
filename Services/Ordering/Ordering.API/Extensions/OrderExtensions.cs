@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ordering.Infrastructure.Data;
 
 namespace Ordering.API.Extensions
 {
@@ -28,6 +29,20 @@ namespace Ordering.API.Extensions
         {
             context.Database.Migrate();
             seeder(context, services);
+        }
+
+        public static IHost SeedDataBase(this IHost host, WebApplication app)
+        {
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<OrderContext>();
+
+            if (!context.Orders.Any())
+            {
+                context.Orders.AddRange(OrderContextSeed.GetOrders());
+                context.SaveChanges();
+            }
+            return host;
         }
     }
 }
