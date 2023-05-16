@@ -1,4 +1,7 @@
+using EventBus.Messages.Common;
 using HealthChecks.UI.Client;
+using MassTransit;
+using Ordering.API.EventBusConsumer;
 using Ordering.API.Extensions;
 using Ordering.Application.Extensions;
 using Ordering.Infrastructure.Data;
@@ -11,7 +14,6 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
         builder.Services.AddControllers();
         builder.Services.AddApiVersioning();
         builder.Services.AddEndpointsApiExplorer();
@@ -19,6 +21,20 @@ internal class Program
         builder.Services.AddApplicationServices();
         builder.Services.AddInfrastructureServices(builder.Configuration);
         builder.Services.AddHealthChecks().Services.AddDbContext<OrderContext>();
+        builder.Services.AddScoped<BasketOrderingConsumer>();
+        builder.Services.AddMassTransit(config =>
+        {
+            config.AddConsumer<BasketOrderingConsumer>();
+            config.UsingRabbitMq((ct, cfg) =>
+            {
+                cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+                cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
+                {
+                    c.ConfigureConsumer<BasketOrderingConsumer>(ct);
+                });
+            });
+        });
+        builder.Services.AddMassTransitHostedService();
 
         var app = builder.Build();
 
