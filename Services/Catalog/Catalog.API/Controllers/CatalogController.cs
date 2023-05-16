@@ -8,11 +8,11 @@ using System.Net;
 
 namespace Catalog.API.Controllers
 {
-    public class CatalogContoller : BaseApiController
+    public class CatalogController : BaseApiController
     {
         private readonly IMediator _mediator;
 
-        public CatalogContoller(IMediator mediator)
+        public CatalogController(IMediator mediator)
         {
             _mediator = mediator;
         }

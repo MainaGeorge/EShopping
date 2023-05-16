@@ -46,6 +46,12 @@ services:
       context: .
       dockerfile: Services/Ordering/Ordering.API//Dockerfile
 
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapi
+    build:
+       context: .
+       dockerfile: ApiGateways/Ocelot/Ocelot.ApiGateway/Dockerfile
+
 volumes:
   mongo_data: 
   portainer_data:
