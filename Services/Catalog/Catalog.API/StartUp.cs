@@ -3,6 +3,10 @@ using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Reflection;
 
 namespace Catalog.API
@@ -18,7 +22,6 @@ namespace Catalog.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddApiVersioning();
             services.AddHealthChecks()
                 .AddMongoDb(_configuration["DatabaseSettings:ConnectionString"],
@@ -31,6 +34,19 @@ namespace Catalog.API
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductTypeRepository, ProductRepository>();
             services.AddScoped<IBrandRepository, ProductRepository>();
+
+            var userPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            services.AddControllers(config =>
+            {
+                config.Filters.Add(new AuthorizeFilter(userPolicy));
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opts =>
+                {
+                    opts.Authority = "https://localhost:9009";
+                    opts.Audience = "Catalog";
+                });
 
         }
 
@@ -45,6 +61,7 @@ namespace Catalog.API
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

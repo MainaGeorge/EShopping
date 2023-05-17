@@ -55,7 +55,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ocelot", "Ocelot", "{D9FA7D94-7ADD-442E-8C57-7B01A2310485}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ocelot.ApiGateway", "ApiGateways\Ocelot\Ocelot.ApiGateway\Ocelot.ApiGateway.csproj", "{E24CA361-DED2-4114-BE7B-06D5BBF3CB42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ocelot.ApiGateway", "ApiGateways\Ocelot\Ocelot.ApiGateway\Ocelot.ApiGateway.csproj", "{E24CA361-DED2-4114-BE7B-06D5BBF3CB42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eshopping.Identity", "Infrastructure\Eshopping.Identity\Eshopping.Identity.csproj", "{35094EFC-0ABB-4E75-AD62-653948EBE6EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,10 @@ Global
 		{E24CA361-DED2-4114-BE7B-06D5BBF3CB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E24CA361-DED2-4114-BE7B-06D5BBF3CB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E24CA361-DED2-4114-BE7B-06D5BBF3CB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35094EFC-0ABB-4E75-AD62-653948EBE6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35094EFC-0ABB-4E75-AD62-653948EBE6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35094EFC-0ABB-4E75-AD62-653948EBE6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35094EFC-0ABB-4E75-AD62-653948EBE6EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +173,7 @@ Global
 		{326BF6F8-3900-43C8-9AD8-682F5FB17FBA} = {18907486-F89F-44B5-B7B6-2D304D78E425}
 		{D9FA7D94-7ADD-442E-8C57-7B01A2310485} = {35ADEAE7-0D20-4033-99EA-FE33245B48B7}
 		{E24CA361-DED2-4114-BE7B-06D5BBF3CB42} = {D9FA7D94-7ADD-442E-8C57-7B01A2310485}
+		{35094EFC-0ABB-4E75-AD62-653948EBE6EE} = {18907486-F89F-44B5-B7B6-2D304D78E425}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C98588D-806A-4393-B43E-2D957FD9A236}
