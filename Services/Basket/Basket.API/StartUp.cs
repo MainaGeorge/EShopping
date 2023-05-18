@@ -5,6 +5,9 @@ using Basket.Infrastructure.Repositories;
 using Discount.Grpc.Protos;
 using HealthChecks.UI.Client;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Reflection;
 
 namespace Basket.API
@@ -20,7 +23,6 @@ namespace Basket.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddApiVersioning();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<DiscountGrpcService>();
@@ -45,6 +47,20 @@ namespace Basket.API
                 });
             });
             services.AddMassTransitHostedService();
+
+            var userPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            services.AddControllers(config =>
+                {
+                    config.Filters.Add(new AuthorizeFilter(userPolicy));
+                });
+
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opts =>
+                {
+                    opts.Authority = "https://localhost:9009";
+                    opts.Audience = "Basket";
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -58,6 +74,7 @@ namespace Basket.API
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
